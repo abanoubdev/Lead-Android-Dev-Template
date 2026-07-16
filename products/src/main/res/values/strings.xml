@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="network_error_title">Network Error</string>
+    <string name="unknown_error_title">Unknown Error</string>
+    <string name="unauthorized_error">Unauthorized Error\n</string>
+    <string name="not_found_error">API not found</string>
+    <string name="server_error_title">Server Error, please try again later</string>
+</resources>
