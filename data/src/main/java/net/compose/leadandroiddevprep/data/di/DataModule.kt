@@ -13,6 +13,7 @@ import net.compose.leadandroiddevprep.data.remote.ProductApiService
 import net.compose.leadandroiddevprep.data.repository.ProductRepositoryImpl
 import net.compose.leadandroiddevprep.data.repository.ProductRepositoryOfflineFirstImpl
 import net.compose.leadandroiddevprep.domain.repository.ProductRepository
+import net.compose.leadandroiddevprep.domain.repository.ProductRepositoryOfflineFirst
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -51,7 +52,7 @@ object DataModule {
     fun provideProductOfflineFirstRepository(
         dao: ProductDao,
         api: ProductApiService
-    ): ProductRepository {
+    ): ProductRepositoryOfflineFirst {
         return ProductRepositoryOfflineFirstImpl(dao, api)
     }
 

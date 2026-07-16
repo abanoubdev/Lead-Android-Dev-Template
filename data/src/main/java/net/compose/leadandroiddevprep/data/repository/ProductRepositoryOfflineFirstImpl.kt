@@ -9,13 +9,13 @@ import net.compose.leadandroiddevprep.data.local.ProductDao
 import net.compose.leadandroiddevprep.data.remote.ProductApiService
 import net.compose.leadandroiddevprep.domain.Resource
 import net.compose.leadandroiddevprep.domain.model.Product
-import net.compose.leadandroiddevprep.domain.repository.ProductRepository
+import net.compose.leadandroiddevprep.domain.repository.ProductRepositoryOfflineFirst
 import javax.inject.Inject
 
 class ProductRepositoryOfflineFirstImpl @Inject constructor(
     private val dao: ProductDao,
     private val api: ProductApiService
-) : ProductRepository {
+) : ProductRepositoryOfflineFirst {
 
     override fun getProducts(): Flow<Resource<List<Product>>> = channelFlow {
 

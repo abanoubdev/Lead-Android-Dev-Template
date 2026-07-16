@@ -1,8 +1,9 @@
 package net.compose.leadandroiddevprep.domain.repository
 
+import kotlinx.coroutines.flow.Flow
 import net.compose.leadandroiddevprep.domain.Resource
 import net.compose.leadandroiddevprep.domain.model.Product
 
-interface ProductRepository {
-    suspend fun getProducts(): Resource<List<Product>>
+interface ProductRepositoryOfflineFirst {
+    fun getProducts(): Flow<Resource<List<Product>>>
 }

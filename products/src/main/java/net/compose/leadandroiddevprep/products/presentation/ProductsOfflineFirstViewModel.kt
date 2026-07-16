@@ -17,7 +17,7 @@ import net.compose.leadandroiddevprep.data.exception.DomainException
 import net.compose.leadandroiddevprep.data.exception.toDomainException
 import net.compose.leadandroiddevprep.domain.Resource
 import net.compose.leadandroiddevprep.domain.model.Product
-import net.compose.leadandroiddevprep.domain.repository.ProductRepository
+import net.compose.leadandroiddevprep.domain.repository.ProductRepositoryOfflineFirst
 import net.compose.leadandroiddevprep.products.R
 import javax.inject.Inject
 
@@ -28,7 +28,7 @@ sealed interface ProductIntent {
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ProductsOfflineFirstViewModel @Inject constructor(
-    private val repository: ProductRepository
+    private val repository: ProductRepositoryOfflineFirst
 ) : ViewModel() {
 
     private val retryTrigger = MutableSharedFlow<Unit>(
