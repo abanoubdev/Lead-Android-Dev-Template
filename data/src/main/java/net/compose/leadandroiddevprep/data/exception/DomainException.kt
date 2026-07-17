@@ -1,6 +1,6 @@
 package net.compose.leadandroiddevprep.data.exception
 
-import net.compose.leadandroiddevprep.domain.Resource
+import net.compose.leadandroiddevprep.domain.network.Resource
 import retrofit2.HttpException
 import java.io.IOException
 

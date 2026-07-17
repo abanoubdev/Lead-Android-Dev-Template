@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import net.compose.leadandroiddevprep.data.exception.safeApiCall
 import net.compose.leadandroiddevprep.data.local.ProductDao
 import net.compose.leadandroiddevprep.data.remote.ProductApiService
-import net.compose.leadandroiddevprep.domain.Resource
+import net.compose.leadandroiddevprep.domain.network.Resource
 import net.compose.leadandroiddevprep.domain.model.Product
 import net.compose.leadandroiddevprep.domain.repository.ProductRepositoryOfflineFirst
 import javax.inject.Inject

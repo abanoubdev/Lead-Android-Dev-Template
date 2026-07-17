@@ -1,6 +1,5 @@
 package net.compose.leadandroiddevprep.products.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +12,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import net.compose.leadandroiddevprep.data.exception.DomainException
 import net.compose.leadandroiddevprep.data.exception.toDomainException
-import net.compose.leadandroiddevprep.domain.Resource
+import net.compose.leadandroiddevprep.domain.network.Resource
 import net.compose.leadandroiddevprep.domain.model.Product
 import net.compose.leadandroiddevprep.domain.repository.ProductRepository
 import net.compose.leadandroiddevprep.products.R

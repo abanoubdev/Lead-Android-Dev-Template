@@ -1,6 +1,6 @@
 package net.compose.leadandroiddevprep.domain.repository
 
-import net.compose.leadandroiddevprep.domain.Resource
+import net.compose.leadandroiddevprep.domain.network.Resource
 import net.compose.leadandroiddevprep.domain.model.Product
 
 interface ProductRepository {

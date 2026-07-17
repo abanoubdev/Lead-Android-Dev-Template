@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -38,6 +39,13 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
+    implementation(libs.retrofit.converter.kotlinx.serialization)
+    debugImplementation(libs.chucker)
+    releaseImplementation(libs.chucker.noop)
+
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
+
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)

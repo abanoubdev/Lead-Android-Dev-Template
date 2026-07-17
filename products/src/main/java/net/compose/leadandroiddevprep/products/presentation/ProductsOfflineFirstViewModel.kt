@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import net.compose.leadandroiddevprep.data.exception.DomainException
 import net.compose.leadandroiddevprep.data.exception.toDomainException
-import net.compose.leadandroiddevprep.domain.Resource
+import net.compose.leadandroiddevprep.domain.network.Resource
 import net.compose.leadandroiddevprep.domain.model.Product
 import net.compose.leadandroiddevprep.domain.repository.ProductRepositoryOfflineFirst
 import net.compose.leadandroiddevprep.products.R
@@ -76,10 +76,6 @@ class ProductsOfflineFirstViewModel @Inject constructor(
                             } else {
                                 ProductListUiState.Empty
                             }
-                        }
-
-                        else -> {
-                            throw IllegalArgumentException("Unknown Resource type: $resource")
                         }
                     }
                 }
