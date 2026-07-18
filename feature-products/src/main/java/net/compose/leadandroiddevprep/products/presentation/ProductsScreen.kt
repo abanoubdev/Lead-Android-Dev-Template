@@ -18,7 +18,6 @@ import net.compose.leadandroiddevprep.products.presentation.composables.Products
 fun ProductsScreenComposable(
     viewModel: ProductsViewModel = hiltViewModel(),
 ) {
-
     val productsList by viewModel.productsState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {

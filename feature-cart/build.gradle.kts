@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "net.compose.leadandroiddevprep.products"
+    namespace = "net.compose.leadandroiddevprep.cart"
     compileSdk = 36
 
     defaultConfig {

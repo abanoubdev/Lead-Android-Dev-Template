@@ -1,7 +1,6 @@
 package net.compose.leadandroiddevprep
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -12,13 +11,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import dagger.hilt.android.AndroidEntryPoint
+import net.compose.leadandroiddevprep.auth.navigation.AuthEntryProvider
+import net.compose.leadandroiddevprep.cart.navigation.CartEntryProvider
 import net.compose.leadandroiddevprep.products.navigation.Products
 import net.compose.leadandroiddevprep.products.navigation.ProductsEntryProvider
 import net.compose.leadandroiddevprep.ui.theme.LeadAndroidDevPrepTheme
@@ -51,12 +51,20 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainNavigation() {
+
     val backStack = rememberNavBackStack(Products)
+
     NavDisplay(
-        backStack = backStack, onBack = { backStack.removeLastOrNull() }, entryDecorators = listOf(
+        backStack = backStack,
+        onBack = { backStack.removeLastOrNull() },
+        entryDecorators = listOf(
             rememberSaveableStateHolderNavEntryDecorator(),
             rememberViewModelStoreNavEntryDecorator()
         ), entryProvider = entryProvider {
             ProductsEntryProvider(backStack = backStack)
+            AuthEntryProvider(backStack = backStack) {
+                backStack.removeLastOrNull()
+            }
+            CartEntryProvider(backStack)
         })
 }

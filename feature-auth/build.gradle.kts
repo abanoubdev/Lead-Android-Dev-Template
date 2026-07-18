@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "net.compose.leadandroiddevprep.products"
+    namespace = "net.compose.leadandroiddevprep.auth"
     compileSdk = 36
 
     defaultConfig {
@@ -79,7 +79,6 @@ dependencies {
     // Tests
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.turbine)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 }

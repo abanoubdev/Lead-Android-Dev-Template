@@ -72,6 +72,8 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":feature-products"))
+    implementation(project(":feature-cart"))
+    implementation(project(":feature-auth"))
 
     implementation(libs.androidx.core.ktx)
 
