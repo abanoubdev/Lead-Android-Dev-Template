@@ -39,9 +39,9 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         compose = true
         aidl = false
-        buildConfig = false
         shaders = false
     }
 
@@ -81,6 +81,9 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
 
     // Compose
     implementation(composeBom)

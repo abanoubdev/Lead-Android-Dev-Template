@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import net.compose.leadandroiddevprep.data.local.ProductDao
+import net.compose.leadandroiddevprep.data.remote.CartApiService
 import net.compose.leadandroiddevprep.data.remote.ProductApiService
 import net.compose.leadandroiddevprep.data.repository.CartRepositoryImpl
 import net.compose.leadandroiddevprep.data.repository.ProductRepositoryImpl
@@ -38,7 +39,8 @@ object DataModule {
     @Provides
     @Singleton
     fun provideCartRepository(
+        api: CartApiService
     ): CartRepository {
-        return CartRepositoryImpl()
+        return CartRepositoryImpl(api)
     }
 }

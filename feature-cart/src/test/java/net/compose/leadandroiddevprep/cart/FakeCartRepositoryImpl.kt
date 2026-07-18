@@ -3,15 +3,15 @@ package net.compose.leadandroiddevprep.cart
 import net.compose.leadandroiddevprep.domain.model.CartItem
 import net.compose.leadandroiddevprep.domain.repository.CartRepository
 
-class FakeErrorCartImplementation : CartRepository {
+class FakeCartRepositoryImpl : CartRepository {
+
     override suspend fun getCartItems(): List<CartItem> {
-        throw Exception("Error")
+        return CartItemFactory.createCartItems(15)
     }
 
     override fun getPendingSyncItems(): List<CartItem> {
-        throw Exception("Error")
+        return CartItemFactory.createCartItems(10)
     }
 
-    override suspend fun syncCartItems(pendingItems: List<CartItem>): Boolean = false
-
+    override suspend fun syncCartItems(pendingItems: List<CartItem>): Boolean = true
 }
