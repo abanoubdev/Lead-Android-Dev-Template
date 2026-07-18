@@ -21,11 +21,14 @@ retrofit = "2.11.0"
 okhttp = "4.12.0"
 gson = "2.11.0"
 chucker = "4.0.0"
+runtime = "1.11.4"
+coil = "2.7.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3"}
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended"}
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui"}
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4"}
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest"}
@@ -64,6 +67,8 @@ gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 retrofit-converter-kotlinx-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "retrofit" }
 chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker" }
 chucker-noop = { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chucker" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 
 [plugins]

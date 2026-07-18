@@ -1,9 +1,11 @@
 package net.compose.leadandroiddevprep.data.remote
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 import net.compose.leadandroiddevprep.data.local.ProductEntity
 import net.compose.leadandroiddevprep.domain.model.Product
 
+@Serializable
 data class ProductDto(
     @SerializedName("id") val id: Int,
     @SerializedName("title") val title: String?,

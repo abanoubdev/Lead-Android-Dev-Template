@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -37,6 +38,7 @@ kotlin {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
+    implementation(project(":core-ui"))
 
     // Compose
     val composeBom = platform(libs.androidx.compose.bom)
@@ -44,7 +46,10 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
     androidTestImplementation(composeBom)
+
+    implementation(libs.androidx.compose.runtime)
 
     // Lifecycle
     implementation(libs.androidx.lifecycle.runtime.compose)
@@ -62,6 +67,14 @@ dependencies {
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+
+    // Serialization
+    implementation(libs.kotlinx.serialization.core)
+    implementation(libs.kotlinx.serialization.json)
+
+    // Tooling
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
     // Tests
     testImplementation(libs.junit)

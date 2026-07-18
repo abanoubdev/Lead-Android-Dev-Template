@@ -2,9 +2,11 @@ package net.compose.leadandroiddevprep.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 import net.compose.leadandroiddevprep.domain.model.Product
 
 @Entity(tableName = "products")
+@Serializable
 data class ProductEntity(
     @PrimaryKey
     val id: Int,

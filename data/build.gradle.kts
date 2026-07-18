@@ -46,7 +46,7 @@ dependencies {
     // Serialization
     implementation(libs.kotlinx.serialization.json)
 
-
+    implementation(libs.androidx.compose.runtime)
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)

@@ -19,7 +19,9 @@ import net.compose.leadandroiddevprep.products.R
 
 sealed interface ProductIntent2 {
     data object Retry : ProductIntent2
+    data object FloatButtonClicked : ProductIntent2
     data class ProductClicked(val product: Product) : ProductIntent2
+
 }
 
 sealed interface ProductSideEffect {
@@ -55,9 +57,11 @@ class ProductsViewModel @Inject constructor(val repository: ProductRepository) :
                     is ProductIntent2.Retry -> {
                         fetchProducts()
                     }
-
                     is ProductIntent2.ProductClicked -> {
                         _sideEffectChannel.send(ProductSideEffect.NavigateToDetails(intent.product))
+                    }
+                    is ProductIntent2.FloatButtonClicked -> {
+
                     }
                 }
             }

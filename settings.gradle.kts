@@ -26,4 +26,5 @@ rootProject.name = "LeadAndroidDevPrep"
 include(":app")
 include(":domain")
 include(":data")
-include(":products")
+include(":feature-products")
+include(":core-ui")
