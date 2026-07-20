@@ -24,49 +24,48 @@ class ProductRepositoryOfflineFirstImpl @Inject constructor(
 
     override fun getProducts(): Flow<Resource<List<Product>>> = channelFlow {
 
-        supervisorScope {
-            send(Resource.Loading)
+        send(Resource.Loading)
 
-            launch {
-                dao.getProducts().collectLatest { it ->
-                    if (it.isNotEmpty()) send(Resource.Success(it.map { it.toDomain() }))
-                    else send(Resource.Empty)
-                }
-            }
-
-            val networkResult = safeApiCall {
-                api.getProducts()
-            }
-
-            when (networkResult) {
-                is Resource.Success -> {
-                    val localProducts = dao.getAllProducts()
-                    val localMap = localProducts.associateBy { it.id }
-
-                    val entities = networkResult.data.map { networkItem ->
-                        var entity = networkItem.toEntity()
-                        val existingProduct = localMap[entity.id]
-
-                        if (existingProduct != null) {
-                            entity = entity.copy(
-                                addedToCart = existingProduct.addedToCart,
-                                cartQuantity = existingProduct.cartQuantity
-                            )
-                        }
-                        entity
-                    }
-                    dao.insertProducts(entities)
-                }
-
-                is Resource.Error -> {
-                    val localProducts = dao.getAllProducts()
-                    if (localProducts.isEmpty())
-                        send(Resource.Error(networkResult.exception))
-                }
-
-                else -> send(Resource.Error(Exception("Unknown error")))
+        launch {
+            dao.getProducts().collectLatest { it ->
+                if (it.isNotEmpty()) send(Resource.Success(it.map { it.toDomain() }))
+                else send(Resource.Empty)
             }
         }
+
+        val networkResult = safeApiCall {
+            api.getProducts()
+        }
+
+        when (networkResult) {
+            is Resource.Success -> {
+                val localProducts = dao.getAllProducts()
+                val localMap = localProducts.associateBy { it.id }
+
+                val entities = networkResult.data.map { networkItem ->
+                    var entity = networkItem.toEntity()
+                    val existingProduct = localMap[entity.id]
+
+                    if (existingProduct != null) {
+                        entity = entity.copy(
+                            addedToCart = existingProduct.addedToCart,
+                            cartQuantity = existingProduct.cartQuantity
+                        )
+                    }
+                    entity
+                }
+                dao.insertProducts(entities)
+            }
+
+            is Resource.Error -> {
+                val localProducts = dao.getAllProducts()
+                if (localProducts.isEmpty())
+                    send(Resource.Error(networkResult.exception))
+            }
+
+            else -> send(Resource.Error(Exception("Unknown error")))
+        }
+
     }
 
 
