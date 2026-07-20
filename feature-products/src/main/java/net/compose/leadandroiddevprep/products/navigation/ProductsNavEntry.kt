@@ -13,8 +13,11 @@ data object Products : NavKey
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun EntryProviderScope<NavKey>.ProductsEntryProvider(backStack: NavBackStack<NavKey>) {
+fun EntryProviderScope<NavKey>.ProductsEntryProvider(
+    backStack: NavBackStack<NavKey>,
+    onNavigateToDetails: (Int) -> Unit
+) {
     entry<Products> {
-        ProductsScreenComposable()
+        ProductsScreenComposable(onNavigateToDetails = onNavigateToDetails)
     }
 }

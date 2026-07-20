@@ -24,14 +24,25 @@ class MainApplication : Application(), Configuration.Provider {
     lateinit var workerFactory: HiltWorkerFactory
 
     override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder().setWorkerFactory(workerFactory)
-            .setMinimumLoggingLevel(if (BuildConfig.DEBUG) Log.DEBUG else Log.ERROR)
-            .build()
+        get() = getWorkerManagerConfig()
 
     override fun onCreate() {
         super.onCreate()
         applicationScope.launch {
             syncScheduler.scheduleCartItemsSync()
         }
+    }
+}
+
+private fun MainApplication.getWorkerManagerConfig(): Configuration {
+    val isDebuggable = BuildConfig.DEBUG
+    return if (isDebuggable) {
+        Configuration.Builder().setWorkerFactory(workerFactory)
+            .setMinimumLoggingLevel(Log.DEBUG)
+            .build()
+    } else {
+        Configuration.Builder().setWorkerFactory(workerFactory)
+            .setMinimumLoggingLevel(Log.ERROR)
+            .build()
     }
 }

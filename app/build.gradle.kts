@@ -52,15 +52,10 @@ android {
     }
 }
 
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-}
-
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
-        freeCompilerArgs =
-            listOf("-XXLanguage:+ContextParameters", "-XXLanguage:+ExplicitBackingFields")
+        freeCompilerArgs.add("-Xskip-prerelease-check")
     }
 }
 

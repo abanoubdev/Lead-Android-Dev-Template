@@ -26,17 +26,11 @@ import net.compose.leadandroiddevprep.domain.model.Product
 @Composable
 fun Products(
     products: List<Product>,
-    onProductClick: (Product) -> Unit = {},
-    onFloatClicked: () -> Unit = {}
+    onAddToCartClick: (Product) -> Unit = {},
 ) {
 
     Log.d("ComposePerf", "Products Screen Recomposed!")
-
     val listState = rememberLazyListState()
-
-    val showButton by remember {
-        derivedStateOf { listState.firstVisibleItemIndex > 0 }
-    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
@@ -46,21 +40,8 @@ fun Products(
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    ProductItem(product = product, onProductClick = onProductClick)
+                    ProductItem(product = product, onAddToCartClick = onAddToCartClick)
                 }
-            }
-        }
-
-        if (showButton) {
-            FloatingActionButton(
-                onClick = {
-                    onFloatClicked.invoke()
-                },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp)
-            ) {
-                Icon(Icons.Default.AcUnit, contentDescription = "Up")
             }
         }
     }

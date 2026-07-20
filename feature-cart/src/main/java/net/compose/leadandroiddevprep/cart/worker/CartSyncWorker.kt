@@ -10,8 +10,13 @@ import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withContext
-import net.compose.leadandroiddevprep.domain.repository.CartRepository
+import net.compose.leadandroiddevprep.data.exception.safeApiCall
+import net.compose.leadandroiddevprep.data.repository.ProductRepositoryOfflineFirstImpl
+import net.compose.leadandroiddevprep.domain.network.Resource
+import net.compose.leadandroiddevprep.domain.repository.ProductRepository
+import net.compose.leadandroiddevprep.domain.repository.ProductRepositoryOfflineFirst
 import java.io.IOException
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -19,27 +24,31 @@ import kotlin.coroutines.cancellation.CancellationException
 class CartItemsSyncWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    val cartRepository: CartRepository
+    val repo: ProductRepositoryOfflineFirst
 ) : CoroutineWorker(context, workerParameters) {
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         try {
-            val pendingItems = cartRepository.getPendingSyncItems()
-            if (pendingItems.isNullOrEmpty())
-                return@withContext Result.success()
-            val success = cartRepository.syncCartItems(pendingItems)
-            if (success) Result.success()
-            else Result.failure()
 
-        } catch (e: HttpException) {
-            Result.retry()
-        } catch (e: IOException) {
-            Result.failure()
-        } catch (e: Exception) {
-            if (e is CancellationException) {
-                throw e
+            val syncCartItemsResult = repo.syncCartItems()
+            when (syncCartItemsResult) {
+                is Resource.Success -> {
+                    val result = repo.clearSyncItems()
+                    when (result) {
+                        is Resource.Success -> Result.success()
+                        else -> {
+                            Result.failure()
+                        }
+                    }
+                }
+
+                is Resource.Error -> Result.retry()
+                else -> {
+                    Result.failure()
+                }
             }
+        } catch (e: CancellationException) {
             Result.failure()
         }
     }

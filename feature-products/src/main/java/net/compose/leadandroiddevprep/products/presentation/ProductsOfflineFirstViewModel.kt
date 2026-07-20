@@ -3,16 +3,21 @@ package net.compose.leadandroiddevprep.products.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.compose.leadandroiddevprep.data.exception.DomainException
 import net.compose.leadandroiddevprep.data.exception.toDomainException
 import net.compose.leadandroiddevprep.domain.network.Resource
@@ -23,6 +28,11 @@ import javax.inject.Inject
 
 sealed interface ProductIntent {
     data object Retry : ProductIntent
+}
+
+sealed interface ProductSideEffect {
+    data class NavigateToDetails(val product: Product) : ProductSideEffect
+    data class ShowSnackbar(val message: String) : ProductSideEffect
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -37,6 +47,9 @@ class ProductsOfflineFirstViewModel @Inject constructor(
     )
 
     private val intentFlow = MutableSharedFlow<ProductIntent>()
+
+    private val _sideEffectChannel = Channel<ProductSideEffect>()
+    val sideEffectFlow = _sideEffectChannel.receiveAsFlow()
 
     val productsState: StateFlow<ProductListUiState> = retryTrigger
         .flatMapLatest {
@@ -53,7 +66,7 @@ class ProductsOfflineFirstViewModel @Inject constructor(
 
                         is Resource.Success -> {
                             ProductListUiState.Success(
-                                products = resource.data, null
+                                products = resource.data.toPersistentList(), null
                             )
                         }
 
@@ -112,13 +125,34 @@ class ProductsOfflineFirstViewModel @Inject constructor(
         }
     }
 
-    private fun mapDomainExceptionToStringRes(exception: DomainException?): Int {
-        return when (exception) {
-            is DomainException.Network -> R.string.network_error_title
-            is DomainException.Unauthorized -> R.string.unauthorized_error
-            is DomainException.NotFound -> R.string.not_found_error
-            is DomainException.Server -> R.string.server_error_title
-            is DomainException.Unknown, null -> R.string.unknown_error_title
+    suspend fun addToCart(product: Product) {
+        handleAddToCart(product)
+    }
+
+    private suspend fun handleAddToCart(product: Product) {
+        withContext(Dispatchers.IO) {
+            val result = repository.addToCart(product.id)
+            when (result) {
+                is Resource.Success -> {
+                    _sideEffectChannel.send(ProductSideEffect.ShowSnackbar("Added to cart successfully"))
+                }
+
+                is Resource.Error -> {
+                    _sideEffectChannel.send(ProductSideEffect.ShowSnackbar("Failed to Add to cart, please try again"))
+                }
+
+                else -> {}
+            }
         }
+    }
+}
+
+private fun mapDomainExceptionToStringRes(exception: DomainException?): Int {
+    return when (exception) {
+        is DomainException.Network -> R.string.network_error_title
+        is DomainException.Unauthorized -> R.string.unauthorized_error
+        is DomainException.NotFound -> R.string.not_found_error
+        is DomainException.Server -> R.string.server_error_title
+        is DomainException.Unknown, null -> R.string.unknown_error_title
     }
 }

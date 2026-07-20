@@ -2,6 +2,7 @@ package net.compose.leadandroiddevprep.products
 
 import app.cash.turbine.test
 import junit.framework.TestCase.assertEquals
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -35,7 +36,7 @@ class ProductsViewModelTest {
             val finalState = awaitItem()
             assertEquals(
                 finalState, ProductListUiState.Success(
-                    ProductSampleDataSource.generateSampleProducts(),
+                    ProductSampleDataSource.generateSampleProducts().toPersistentList(),
                     message = null
                 )
             )

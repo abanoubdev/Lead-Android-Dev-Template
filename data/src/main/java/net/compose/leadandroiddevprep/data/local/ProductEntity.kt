@@ -13,7 +13,9 @@ data class ProductEntity(
     val title: String,
     val description: String,
     val price: Double,
-    val imageUrl: String
+    val imageUrl: String,
+    val addedToCart: Boolean = false,
+    val cartQuantity: Int = 0
 ) {
 
     fun toDomain(): Product {
@@ -22,7 +24,9 @@ data class ProductEntity(
             title = title,
             description = description,
             price = price,
-            imageUrl = imageUrl
+            imageUrl = imageUrl,
+            addedToCart = addedToCart,
+            cartQuantity = cartQuantity
         )
     }
 }

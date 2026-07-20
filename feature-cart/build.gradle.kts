@@ -28,8 +28,8 @@ kotlin {
     compilerOptions {
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         freeCompilerArgs = listOf(
-            "-XXLanguage:+ContextParameters",
-            "-XXLanguage:+ExplicitBackingFields",
+//            "-XXLanguage:+ContextParameters",
+//            "-XXLanguage:+ExplicitBackingFields",
             "-XXLanguage:+PropertyParamAnnotationDefaultTargetMode"
         )
     }
@@ -74,6 +74,8 @@ dependencies {
     // Serialization
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.kotlinx.collections.immutable)
 
     // Tooling
     debugImplementation(libs.androidx.compose.ui.test.manifest)

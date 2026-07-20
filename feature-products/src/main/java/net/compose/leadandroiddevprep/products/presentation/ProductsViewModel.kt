@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,12 +22,11 @@ sealed interface ProductIntent2 {
     data object Retry : ProductIntent2
     data object FloatButtonClicked : ProductIntent2
     data class ProductClicked(val product: Product) : ProductIntent2
-
 }
 
-sealed interface ProductSideEffect {
-    data class NavigateToDetails(val product: Product) : ProductSideEffect
-}
+//sealed interface ProductSideEffect {
+//    data class NavigateToDetails(val product: Product) : ProductSideEffect
+//}
 
 @HiltViewModel
 class ProductsViewModel @Inject constructor(val repository: ProductRepository) : ViewModel() {
@@ -88,7 +88,7 @@ class ProductsViewModel @Inject constructor(val repository: ProductRepository) :
                         ProductListUiState.Empty
                     } else {
                         ProductListUiState.Success(
-                            products.data,
+                            products.data.toPersistentList(),
                             message = null
                         )
                     }

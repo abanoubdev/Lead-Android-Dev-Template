@@ -1,5 +1,6 @@
 package net.compose.leadandroiddevprep
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -18,7 +19,6 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import dagger.hilt.android.AndroidEntryPoint
 import net.compose.leadandroiddevprep.auth.navigation.AuthEntryProvider
-import net.compose.leadandroiddevprep.cart.navigation.CartEntryProvider
 import net.compose.leadandroiddevprep.products.navigation.Products
 import net.compose.leadandroiddevprep.products.navigation.ProductsEntryProvider
 import net.compose.leadandroiddevprep.ui.theme.LeadAndroidDevPrepTheme
@@ -29,8 +29,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(
-                lightScrim = android.graphics.Color.TRANSPARENT,
-                darkScrim = android.graphics.Color.TRANSPARENT
+                lightScrim = Color.TRANSPARENT,
+                darkScrim = Color.TRANSPARENT
             )
         )
         super.onCreate(savedInstanceState)
@@ -61,10 +61,14 @@ fun MainNavigation() {
             rememberSaveableStateHolderNavEntryDecorator(),
             rememberViewModelStoreNavEntryDecorator()
         ), entryProvider = entryProvider {
-            ProductsEntryProvider(backStack = backStack)
+            ProductsEntryProvider(
+                backStack = backStack,
+                onNavigateToDetails = {
+
+                }
+            )
             AuthEntryProvider(backStack = backStack) {
                 backStack.removeLastOrNull()
             }
-            CartEntryProvider(backStack)
         })
 }

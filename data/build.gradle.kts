@@ -9,6 +9,10 @@ android {
     namespace = "net.compose.leadandroiddevprep.data"
     compileSdk = 36
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         minSdk = 29
     }
@@ -18,6 +22,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 kotlin {
