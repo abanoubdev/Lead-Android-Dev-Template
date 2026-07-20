@@ -29,4 +29,3 @@ suspend fun <T> safeApiCall(call: suspend () -> T): Resource<T> =
     } catch (e: Throwable) {
         Resource.Error(e.toDomainException())
     }
-

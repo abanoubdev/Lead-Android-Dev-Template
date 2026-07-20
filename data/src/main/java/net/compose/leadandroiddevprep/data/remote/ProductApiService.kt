@@ -8,5 +8,5 @@ interface ProductApiService {
     @GET("products")
     suspend fun getProducts(): List<ProductDto>
     @POST
-    fun syncCartItems(cartItems: List<ProductEntity>)
+    suspend fun syncCartItems(cartItems: List<ProductEntity>)
 }
