@@ -1,6 +1,5 @@
 package net.compose.leadandroiddevprep.products.presentation.composables
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +21,7 @@ import net.compose.leadandroiddevprep.domain.model.Product
 @Composable
 fun ProductItem(
     product: Product,
+    cartQuantity: Int,
     onAddToCartClick: (Product) -> Unit = {}
 ) {
     Column(
@@ -49,9 +49,9 @@ fun ProductItem(
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(text = product.getFormattedPrice(), fontWeight = FontWeight.Medium)
                 Spacer(modifier = Modifier.height(5.dp))
-                if (product.cartQuantity > 0)
+                if (cartQuantity > 0)
                     Text(
-                        text = "Added to cart: ${product.cartQuantity}",
+                        text = "Quantity: $cartQuantity",
                         fontWeight = FontWeight.Bold
                     )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -77,10 +77,9 @@ fun ProductItemPreview() {
         description = "High-quality noise-canceling wireless headphones.",
         price = 199.99,
         imageUrl = "https://example.com/sample-image.png",
-        addedToCart = true,
-        cartQuantity = 10
     )
     ProductItem(
         product = dummyProduct,
+        cartQuantity = 10,
     )
 }

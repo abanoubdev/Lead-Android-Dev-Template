@@ -6,7 +6,4 @@ import net.compose.leadandroiddevprep.domain.model.Product
 
 interface ProductRepositoryOfflineFirst {
     fun getProducts(): Flow<Resource<List<Product>>>
-    suspend fun addToCart(productId: Int): Resource<Boolean>
-    suspend fun syncCartItems(): Resource<Boolean>
-    suspend fun clearSyncItems(): Resource<Boolean>
 }

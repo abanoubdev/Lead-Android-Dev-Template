@@ -7,8 +7,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import net.compose.leadandroiddevprep.data.local.cart.CartItemDao
 import net.compose.leadandroiddevprep.data.local.AppDatabase
-import net.compose.leadandroiddevprep.data.local.ProductDao
+import net.compose.leadandroiddevprep.data.local.product.ProductDao
 import javax.inject.Singleton
 
 @Module
@@ -28,5 +29,10 @@ internal class DatabaseModule {
     @Provides
     fun provideProductDao(appDatabase: AppDatabase): ProductDao {
         return appDatabase.productDao
+    }
+
+    @Provides
+    fun provideCartDao(appDatabase: AppDatabase): CartItemDao {
+        return appDatabase.cartItemDao
     }
 }

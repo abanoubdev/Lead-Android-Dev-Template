@@ -9,7 +9,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import net.compose.leadandroiddevprep.data.BuildConfig
-import net.compose.leadandroiddevprep.data.remote.ProductApiService
+import net.compose.leadandroiddevprep.data.remote.cart.CartApiService
+import net.compose.leadandroiddevprep.data.remote.product.ProductApiService
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -49,5 +50,16 @@ class NetworkModule {
             .client(client)
             .build()
             .create(ProductApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCartApiService(client: OkHttpClient, networkJson: Json): CartApiService {
+        return Retrofit.Builder()
+            .baseUrl("https://fakestoreapi.com/")
+            .addConverterFactory(networkJson.asConverterFactory("application/json".toMediaType()))
+            .client(client)
+            .build()
+            .create(CartApiService::class.java)
     }
 }

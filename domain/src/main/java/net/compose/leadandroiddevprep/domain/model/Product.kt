@@ -9,8 +9,6 @@ data class Product(
     val description: String,
     val price: Double,
     val imageUrl: String,
-    val addedToCart: Boolean = false,
-    val cartQuantity: Int = 0
 ) {
 
     fun getFormattedPrice(): String {

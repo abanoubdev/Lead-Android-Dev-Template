@@ -97,7 +97,7 @@ fun ProductsScreenComposable(
             }
 
             is ProductListUiState.Success -> {
-                Products(state.products, onAddToCartClick = {
+                Products(state.products, cartQuantities = state.cartQuantities, onAddToCartClick = {
                     scope.launch {
                         viewModel.addToCart(it)
                     }

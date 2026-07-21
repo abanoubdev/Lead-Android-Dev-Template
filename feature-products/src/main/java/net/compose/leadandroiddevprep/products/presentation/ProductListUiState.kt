@@ -7,7 +7,10 @@ import net.compose.leadandroiddevprep.domain.model.Product
 sealed interface ProductListUiState {
     data object Loading : ProductListUiState
     data object Empty : ProductListUiState
-    data class Success(val products: PersistentList<Product>, @StringRes val message: Int?) :
-        ProductListUiState
+    data class Success(
+        val products: PersistentList<Product>,
+        @StringRes val message: Int?,
+        val cartQuantities: Map<Int, Int> = emptyMap()
+    ) : ProductListUiState
     data class Error(@StringRes val message: Int) : ProductListUiState
 }

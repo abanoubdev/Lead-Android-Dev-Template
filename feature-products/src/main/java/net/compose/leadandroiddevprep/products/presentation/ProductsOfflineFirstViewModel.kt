@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.scan
@@ -22,6 +23,7 @@ import net.compose.leadandroiddevprep.data.exception.DomainException
 import net.compose.leadandroiddevprep.data.exception.toDomainException
 import net.compose.leadandroiddevprep.domain.network.Resource
 import net.compose.leadandroiddevprep.domain.model.Product
+import net.compose.leadandroiddevprep.domain.repository.CartRepository
 import net.compose.leadandroiddevprep.domain.repository.ProductRepositoryOfflineFirst
 import net.compose.leadandroiddevprep.products.R
 import javax.inject.Inject
@@ -38,7 +40,8 @@ sealed interface ProductSideEffect {
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ProductsOfflineFirstViewModel @Inject constructor(
-    private val repository: ProductRepositoryOfflineFirst
+    private val repository: ProductRepositoryOfflineFirst,
+    private val cartRepository: CartRepository
 ) : ViewModel() {
 
     private val retryTrigger = MutableSharedFlow<Unit>(
@@ -51,8 +54,8 @@ class ProductsOfflineFirstViewModel @Inject constructor(
     private val _sideEffectChannel = Channel<ProductSideEffect>()
     val sideEffectFlow = _sideEffectChannel.receiveAsFlow()
 
-    val productsState: StateFlow<ProductListUiState> = retryTrigger
-        .flatMapLatest {
+    val productsState: StateFlow<ProductListUiState> = combine(
+        retryTrigger.flatMapLatest {
             repository.getProducts()
                 .scan<Resource<List<Product>>, ProductListUiState>(ProductListUiState.Loading) { currentState, resource ->
                     when (resource) {
@@ -95,12 +98,19 @@ class ProductsOfflineFirstViewModel @Inject constructor(
                 .catch { throwable ->
                     emit(ProductListUiState.Error(mapDomainExceptionToStringRes(throwable.toDomainException())))
                 }
+        },
+        cartRepository.getCartItemsStream()
+    ) { state, cartQuantities ->
+        if (state is ProductListUiState.Success) {
+            state.copy(cartQuantities = cartQuantities)
+        } else {
+            state
         }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = ProductListUiState.Loading
-        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = ProductListUiState.Loading
+    )
 
     init {
         retryTrigger.tryEmit(Unit)
@@ -131,7 +141,7 @@ class ProductsOfflineFirstViewModel @Inject constructor(
 
     private suspend fun handleAddToCart(product: Product) {
         withContext(Dispatchers.IO) {
-            val result = repository.addToCart(product.id)
+            val result = cartRepository.addToCart(product.id)
             when (result) {
                 is Resource.Success -> {
                     _sideEffectChannel.send(ProductSideEffect.ShowSnackbar("Added to cart successfully"))

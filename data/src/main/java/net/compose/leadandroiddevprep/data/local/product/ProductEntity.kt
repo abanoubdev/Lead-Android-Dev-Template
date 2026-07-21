@@ -1,8 +1,9 @@
-package net.compose.leadandroiddevprep.data.local
+package net.compose.leadandroiddevprep.data.local.product
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
+import net.compose.leadandroiddevprep.data.remote.product.ProductDto
 import net.compose.leadandroiddevprep.domain.model.Product
 
 @Entity(tableName = "products")
@@ -14,8 +15,6 @@ data class ProductEntity(
     val description: String,
     val price: Double,
     val imageUrl: String,
-    val addedToCart: Boolean = false,
-    val cartQuantity: Int = 0
 ) {
 
     fun toDomain(): Product {
@@ -25,8 +24,6 @@ data class ProductEntity(
             description = description,
             price = price,
             imageUrl = imageUrl,
-            addedToCart = addedToCart,
-            cartQuantity = cartQuantity
         )
     }
 }
