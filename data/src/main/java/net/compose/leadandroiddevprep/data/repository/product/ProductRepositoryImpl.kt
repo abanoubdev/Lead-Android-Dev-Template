@@ -12,19 +12,21 @@ class ProductRepositoryImpl @Inject constructor(
 ) : ProductRepository {
 
     override suspend fun getProducts(): Resource<List<Product>> {
-        val networkResult = safeApiCall {
-            api.getProducts()
-        }
-        return when (networkResult) {
-            is Resource.Success -> {
-                val data = networkResult.data.map { it.toDomain() }
-                Resource.Success(data)
-            }
-            is Resource.Error -> {
-                Resource.Error(networkResult.exception)
-            }
-            else ->
-                Resource.Empty
-        }
+//        val networkResult = safeApiCall {
+//            api.getProducts()
+//        }
+//        return when (networkResult) {
+//            is Resource.Success -> {
+//                val data = networkResult.data.map { it.toDomain() }
+//                Resource.Success(data)
+//            }
+//            is Resource.Error -> {
+//                Resource.Error(networkResult.exception)
+//            }
+//            else ->
+//                Resource.Empty
+//        }
+
+        return Resource.Success(emptyList())
     }
 }
