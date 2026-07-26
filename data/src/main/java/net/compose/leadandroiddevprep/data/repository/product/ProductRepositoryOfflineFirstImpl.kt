@@ -22,47 +22,39 @@ class ProductRepositoryOfflineFirstImpl @Inject constructor(
         send(Resource.Loading)
 
         launch {
-            dao.getProducts().collectLatest { it ->
-                if (it.isNotEmpty()) send(Resource.Success(it.map { it.toDomain() }))
-                else send(Resource.Empty)
+            dao.getProducts().collectLatest {
+                if (it.isNotEmpty())
+                    send(Resource.Success(it.map { it.toDomain() }))
             }
         }
 
-        val networkResult = safeApiCall {
+        val productResult = safeApiCall {
             api.getProducts()
         }
 
-        when (networkResult) {
+        when (productResult) {
             is Resource.Success -> {
-//                val localProducts = dao.getAllProducts()
-                val entities = networkResult.data.map { networkItem ->
+                val entities = productResult.data.map { networkItem ->
                     networkItem.toEntity()
                 }
-                dao.insertProducts(entities)
-//                val localMap = localProducts.associateBy { it.id }
-//                val entities = networkResult.data.map { networkItem ->
-//                    var entity = networkItem.toEntity()
-//                    val existingProduct = localMap[entity.id]
-//
-//                    if (existingProduct != null) {
-//                        entity = entity.copy(
-//                            addedToCart = existingProduct.addedToCart,
-//                            cartQuantity = existingProduct.cartQuantity
-//                        )
-//                    }
-//                    entity
-//                }
-//                dao.insertProducts(entities)
+                if (entities.isNotEmpty())
+                    dao.insertProducts(entities)
+                else {
+                    val localProducts = dao.getAllProducts()
+                    val showEmpty = localProducts.isEmpty()
+                    send(Resource.Empty(showEmpty = showEmpty))
+                }
             }
 
             is Resource.Error -> {
                 val localProducts = dao.getAllProducts()
-                if (localProducts.isEmpty())
-                    send(Resource.Error(networkResult.exception))
+                if (localProducts.isNotEmpty())
+                    send(Resource.Success(localProducts.map { it.toDomain() }))
+                else
+                    send(Resource.Error(productResult.exception))
             }
 
-            else -> send(Resource.Error(Exception("Unknown error")))
+            else -> {}
         }
-
     }
 }
