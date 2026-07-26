@@ -40,9 +40,7 @@ class ProductRepositoryOfflineFirstImpl @Inject constructor(
                 if (entities.isNotEmpty())
                     dao.insertProducts(entities)
                 else {
-                    val localProducts = dao.getAllProducts()
-                    val showEmpty = localProducts.isEmpty()
-                    send(Resource.Empty(showEmpty = showEmpty))
+                    send(Resource.Empty(showEmpty = dao.getAllProducts().isEmpty()))
                 }
             }
 
