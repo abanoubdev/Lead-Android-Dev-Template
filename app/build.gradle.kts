@@ -69,7 +69,6 @@ dependencies {
     implementation(project(":feature-products"))
     implementation(project(":feature-cart"))
     implementation(project(":feature-auth"))
-    implementation(project(":features:posts:details"))
 
     implementation(libs.androidx.core.ktx)
 
@@ -80,6 +79,8 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.hilt.work)
     ksp(libs.androidx.hilt.compiler)
+
+    implementation(libs.kotlinx.collections.immutable)
 
     // Compose
     implementation(composeBom)

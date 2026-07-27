@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 import net.compose.leadandroiddevprep.data.BuildConfig
 import net.compose.leadandroiddevprep.data.remote.cart.CartApiService
 import net.compose.leadandroiddevprep.data.remote.product.ProductApiService
+import okhttp3.CertificatePinner
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -30,6 +31,14 @@ class NetworkModule {
         val builder = OkHttpClient.Builder()
         if (isDebuggable)
             builder.addInterceptor(ChuckerInterceptor(context))
+
+        builder.addInterceptor { chain ->
+            val request = chain.request().newBuilder()
+                .addHeader("Content-Type", "application/json")
+                .build()
+            chain.proceed(request)
+        }
+
         return builder.build()
     }
 

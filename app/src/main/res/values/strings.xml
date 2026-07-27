@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LeadAndroidDevPrep</string>
+    <string name="transaction_db_save_message">Transaction saved to be processed later, you will get a notification if we fail to sync your transaction</string>
+    <string name="checkout_success">Checkout Success\n</string>
 </resources>

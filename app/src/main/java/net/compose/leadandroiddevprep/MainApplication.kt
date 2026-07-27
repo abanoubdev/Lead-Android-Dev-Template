@@ -19,6 +19,7 @@ class MainApplication : Application(), Configuration.Provider {
 
     @Inject
     lateinit var syncScheduler: SyncScheduler
+//    lateinit var checkoutSyncScheduler: CheckoutSyncScheduler
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
@@ -30,6 +31,7 @@ class MainApplication : Application(), Configuration.Provider {
         super.onCreate()
         applicationScope.launch {
             syncScheduler.scheduleCartItemsSync()
+//            checkoutSyncScheduler.scheduleCheckoutItemsSync()
         }
     }
 }

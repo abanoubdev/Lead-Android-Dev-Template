@@ -65,4 +65,7 @@ dependencies {
     
     // Gson
     implementation(libs.gson)
+
+    // Security (Keystore)
+    implementation(libs.androidx.security.crypto)
 }
