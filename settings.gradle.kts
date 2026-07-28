@@ -22,7 +22,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "LeadAndroidDevPrep"
+rootProject.name = "Android-Template"
 include(":app")
 include(":domain")
 include(":data")
