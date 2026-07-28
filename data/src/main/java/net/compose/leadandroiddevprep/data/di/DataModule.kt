@@ -1,14 +1,10 @@
 package net.compose.leadandroiddevprep.data.di
 
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import net.compose.leadandroiddevprep.data.local.cart.CartItemDao
-import net.compose.leadandroiddevprep.data.local.keystore.MerchantKeyStore
-import net.compose.leadandroiddevprep.data.local.keystore.MerchantKeyStoreImpl
 import net.compose.leadandroiddevprep.data.local.product.ProductDao
 import net.compose.leadandroiddevprep.data.remote.cart.CartApiService
 import net.compose.leadandroiddevprep.data.remote.product.ProductApiService
